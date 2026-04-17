@@ -24,7 +24,9 @@ local function runSpec(spec)
 		return false, string.format("spec %s must expose a callable test function", spec.name)
 	end
 
-	return pcall(spec.run)
+	return pcall(spec.run, function(modulePath)
+		return require(string.format('%s%s', process.cwd, modulePath))
+	end)
 end
 
 local function runSpecs(specEntries, selectedFilter)
