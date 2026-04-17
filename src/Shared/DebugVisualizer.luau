@@ -1,4 +1,12 @@
-local RobloxCompat = require('./RobloxCompat.luau')
+local function loadRobloxCompat()
+	if script ~= nil and script.Parent ~= nil then
+		return require(script.Parent.RobloxCompat)
+	end
+
+	return require('./RobloxCompat.luau')
+end
+
+local RobloxCompat = loadRobloxCompat()
 
 local CFrame = RobloxCompat.CFrame
 local Color3 = RobloxCompat.Color3
@@ -39,7 +47,7 @@ local function renderShape(container, payload, created)
 
 	if shape.kind == 'box' then
 		queryPart.Size = shape.size
-		queryPart.CFrame = shape.center
+		queryPart.CFrame = shape.cframe
 	elseif shape.kind == 'radius' then
 		local diameter = shape.radius * 2
 		if Enum ~= nil then

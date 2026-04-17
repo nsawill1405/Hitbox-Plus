@@ -1,10 +1,20 @@
-local RobloxCompat = require('./RobloxCompat.luau')
+local function loadRobloxCompat()
+	if script ~= nil and script.Parent ~= nil then
+		return require(script.Parent.RobloxCompat)
+	end
+
+	return require('./RobloxCompat.luau')
+end
+
+local RobloxCompat = loadRobloxCompat()
+local Color3 = RobloxCompat.Color3
+local Vector3 = RobloxCompat.Vector3
 
 local DEFAULT_LIFETIME_SECONDS = 0.25
 local DEFAULT_PALETTE = {
-	query = RobloxCompat.Color3.fromRGB(0, 170, 255),
-	hit = RobloxCompat.Color3.fromRGB(0, 255, 0),
-	reject = RobloxCompat.Color3.fromRGB(255, 80, 80),
+	query = Color3.fromRGB(0, 170, 255),
+	hit = Color3.fromRGB(0, 255, 0),
+	reject = Color3.fromRGB(255, 80, 80),
 }
 
 local DebugTypes = {}
@@ -31,7 +41,7 @@ function DebugTypes.shapeFromQuery(query)
 	if query.type == 'box' then
 		return {
 			kind = 'box',
-			center = query.center,
+			cframe = query.center,
 			size = query.size,
 		}
 	end

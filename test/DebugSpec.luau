@@ -36,6 +36,7 @@ return function(loadModule)
 	})
 
 	expect(payload.shape.kind == 'box', 'shape should normalize from query type')
+	expect(payload.shape.cframe == CFrame.new(0, 3, 0), 'box shape should expose cframe')
 	expect(payload.mode == 'both', 'mode should be preserved')
 	expect(payload.hits[1].id == 'enemy-a', 'hits should be preserved')
 
