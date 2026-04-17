@@ -233,4 +233,49 @@ return function(loadModule)
 
 	expect(stale.ok == false)
 	expect(stale.reason == 'max-latency')
+
+	local Color3 = Roblox.Color3
+	local Instance = Roblox.Instance
+	local sharedRoot = Instance.new('Folder')
+	local sharedResolver = Resolver.create({
+		debug = {
+			enabled = true,
+			mode = 'shared',
+			lifetimeSeconds = 0.2,
+			container = sharedRoot,
+			palette = {
+				query = Color3.fromRGB(0, 170, 255),
+				hit = Color3.fromRGB(0, 255, 0),
+				reject = Color3.fromRGB(255, 80, 80),
+			},
+		},
+		validation = {
+			maxLatencySeconds = 0.2,
+			maxDistance = 20,
+		},
+	})
+
+	sharedResolver:pushSnapshot({
+		timestamp = 10,
+		entities = {
+			{ id = 'enemy-a', position = Vector3.new(4, 0, 0), radius = 2, team = 'Red' },
+		},
+	})
+
+	local sharedResult = sharedResolver:resolve({
+		attackId = 'debug-radius-1',
+		attackerId = 'player-a',
+		attackerPosition = Vector3.new(0, 0, 0),
+		attackerTeam = 'Blue',
+		serverTime = 10,
+		clientTime = 10,
+		query = {
+			type = 'radius',
+			position = Vector3.new(0, 0, 0),
+			radius = 8,
+		},
+	})
+
+	expect(sharedResult.ok == true, 'resolver should still resolve normally')
+	expect(sharedRoot:FindFirstChild('HitboxPlusQuery') ~= nil, 'shared debug volume should be rendered')
 end

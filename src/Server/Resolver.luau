@@ -34,6 +34,7 @@ local Queries = loadShared('Queries', 'src/Shared/Queries.luau')
 local Results = loadShared('Results', 'src/Shared/Results.luau')
 local Types = loadShared('Types', 'src/Shared/Types.luau')
 local History = loadServer('History', './History.luau')
+local DebugEmitter = loadServer('DebugEmitter', './DebugEmitter.luau')
 local QueryDispatcher = loadServer('Queries', './Queries/init.luau')
 local Validators = loadServer('Validators', './Validators.luau')
 
@@ -49,6 +50,7 @@ function Resolver.create(config)
 		history = source.historyStore or History.create(normalizedConfig.history),
 		validators = source.validators or Validators.create(normalizedConfig.validation),
 		queryBackends = source.queryBackends,
+		debugEmitter = source.debugEmitter or DebugEmitter.create(normalizedConfig.debug),
 	}, Resolver)
 end
 
@@ -102,7 +104,7 @@ function Resolver:resolve(request)
 		end
 	end
 
-	return Results.createResolution({
+	local resolution = Results.createResolution({
 		query = normalizedQuery,
 		hits = hits,
 		rejections = rejections,
@@ -112,6 +114,10 @@ function Resolver:resolve(request)
 			candidateCount = #candidates,
 		},
 	})
+
+	self.debugEmitter:emit(normalizedRequest, resolution)
+
+	return resolution
 end
 
 return Resolver

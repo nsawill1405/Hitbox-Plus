@@ -15,6 +15,13 @@ local DEFAULT_CONFIG = table.freeze({
 	},
 	debug = {
 		enabled = false,
+		mode = 'client',
+		lifetimeSeconds = 0.2,
+		palette = {
+			query = nil,
+			hit = nil,
+			reject = nil,
+		},
 	},
 })
 
