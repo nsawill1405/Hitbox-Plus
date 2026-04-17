@@ -1,0 +1,11 @@
+[package]
+name = "williamnorth1405/hitbox-plus"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+license = "MIT"
+description = "Spatial query-based hitbox system with lag compensation hooks and hit validation helpers."
+exclude = ["docs", "examples", "test", ".gitignore", ".worktrees", "aftman.toml"]
+
+[dependencies]
+

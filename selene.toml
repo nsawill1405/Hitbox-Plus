@@ -1,0 +1,6 @@
+std = "roblox"
+
+[config]
+empty_if = { comments_count = true }
+mixed_table = "allow"
+
