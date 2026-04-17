@@ -32,7 +32,11 @@ return function(loadModule)
 			{ id = 'enemy-a', entity = { id = 'enemy-a', position = Vector3.new(2, 3, 0) } },
 		},
 		rejections = {
-			{ id = 'ally-a', entity = { id = 'ally-a', position = Vector3.new(-2, 3, 0) }, reason = 'same-team' },
+			{
+				id = 'ally-a',
+				entity = { id = 'ally-a', position = Vector3.new(-2, 3, 0) },
+				reason = 'same-team',
+			},
 		},
 	})
 
@@ -42,16 +46,28 @@ return function(loadModule)
 	expect(boxPayload.mode == 'both', 'mode should be preserved')
 	expect(boxPayload.hits[1].id == 'enemy-a', 'hits should be preserved')
 	expect(boxPayload.lifetimeSeconds == 0.2, 'default lifetime should match the task default')
-	expect(boxPayload.palette.query == Color3.fromRGB(0, 170, 255), 'default query palette should be normalized')
-	expect(boxPayload.palette.hit == Color3.fromRGB(0, 255, 0), 'default hit palette should be normalized')
-	expect(boxPayload.palette.reject == Color3.fromRGB(255, 80, 80), 'default reject palette should be normalized')
+	expect(
+		boxPayload.palette.query == Color3.fromRGB(0, 170, 255),
+		'default query palette should be normalized'
+	)
+	expect(
+		boxPayload.palette.hit == Color3.fromRGB(0, 255, 0),
+		'default hit palette should be normalized'
+	)
+	expect(
+		boxPayload.palette.reject == Color3.fromRGB(255, 80, 80),
+		'default reject palette should be normalized'
+	)
 
 	local created = DebugVisualizer.render(makeContainer('BoxRoot'), boxPayload)
 	expect(#created == 3, 'query volume, hit marker, and rejection marker should be created')
 	expect(created[1].Name == 'HitboxPlusQuery', 'query part name should be stable')
 	expect(created[1].Size == Vector3.new(6, 4, 8), 'box size should match payload')
 	expect(created[2].Color == Color3.fromRGB(0, 255, 0), 'hit marker should use hit color')
-	expect(created[3].Color == Color3.fromRGB(255, 80, 80), 'rejection marker should use rejection color')
+	expect(
+		created[3].Color == Color3.fromRGB(255, 80, 80),
+		'rejection marker should use rejection color'
+	)
 
 	local radiusPayload = DebugTypes.createPayload({
 		attackId = 'pulse-1',
@@ -65,13 +81,25 @@ return function(loadModule)
 	})
 
 	expect(radiusPayload.shape.kind == 'radius', 'radius queries should normalize to radius shapes')
-	expect(radiusPayload.queryType == 'radius', 'radius queryType should mirror the normalized shape kind')
+	expect(
+		radiusPayload.queryType == 'radius',
+		'radius queryType should mirror the normalized shape kind'
+	)
 
 	local radiusCreated = DebugVisualizer.render(makeContainer('RadiusRoot'), radiusPayload)
-	expect(#radiusCreated == 1, 'radius rendering should only create the query volume when there are no hits')
+	expect(
+		#radiusCreated == 1,
+		'radius rendering should only create the query volume when there are no hits'
+	)
 	expect(radiusCreated[1].Shape == Enum.PartType.Ball, 'radius query should render as a ball')
-	expect(radiusCreated[1].Size == Vector3.new(5, 5, 5), 'radius query size should use the diameter')
-	expect(radiusCreated[1].CFrame == CFrame.new(1, 2, 3), 'radius query should be centered at the query position')
+	expect(
+		radiusCreated[1].Size == Vector3.new(5, 5, 5),
+		'radius query size should use the diameter'
+	)
+	expect(
+		radiusCreated[1].CFrame == CFrame.new(1, 2, 3),
+		'radius query should be centered at the query position'
+	)
 
 	local castPayload = DebugTypes.createPayload({
 		attackId = 'beam-1',
@@ -86,11 +114,26 @@ return function(loadModule)
 	})
 
 	expect(castPayload.shape.kind == 'cast', 'cast queries should normalize to cast shapes')
-	expect(castPayload.queryType == 'cast', 'cast queryType should mirror the normalized shape kind')
-	expect(castPayload.shape.length == 10, 'cast length should default from the direction magnitude')
+	expect(
+		castPayload.queryType == 'cast',
+		'cast queryType should mirror the normalized shape kind'
+	)
+	expect(
+		castPayload.shape.length == 10,
+		'cast length should default from the direction magnitude'
+	)
 
 	local castCreated = DebugVisualizer.render(makeContainer('CastRoot'), castPayload)
-	expect(#castCreated == 1, 'cast rendering should only create the query volume when there are no hits')
-	expect(castCreated[1].Size == Vector3.new(3, 3, 10), 'cast query size should use the diameter and length')
-	expect(castCreated[1].CFrame == CFrame.lookAt(Vector3.new(0, 0, 5), Vector3.new(0, 0, 10)), 'cast query should face the target using a shared-runtime-safe constructor')
+	expect(
+		#castCreated == 1,
+		'cast rendering should only create the query volume when there are no hits'
+	)
+	expect(
+		castCreated[1].Size == Vector3.new(3, 3, 10),
+		'cast query size should use the diameter and length'
+	)
+	expect(
+		castCreated[1].CFrame == CFrame.lookAt(Vector3.new(0, 0, 5), Vector3.new(0, 0, 10)),
+		'cast query should face the target using a shared-runtime-safe constructor'
+	)
 end

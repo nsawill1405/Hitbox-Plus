@@ -83,7 +83,13 @@ function DebugVisualizer.render(container, payload)
 	end
 
 	for _, rejection in payload.rejections do
-		appendMarker(created, container, 'HitboxPlusReject', rejection.entity.position, payload.palette.reject)
+		appendMarker(
+			created,
+			container,
+			'HitboxPlusReject',
+			rejection.entity.position,
+			payload.palette.reject
+		)
 	end
 
 	return created

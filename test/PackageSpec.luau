@@ -50,7 +50,10 @@ return function(loadModule)
 
 	local empty = clientWithoutContainer:renderDebugPayload(payload)
 
-	expect(type(empty) == 'table', 'client renderer without a container should still return a table')
+	expect(
+		type(empty) == 'table',
+		'client renderer without a container should still return a table'
+	)
 	expect(next(empty) == nil, 'client renderer without a container should return an empty table')
 
 	local request = client:buildRequest({

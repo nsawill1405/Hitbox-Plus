@@ -18,14 +18,41 @@ return function()
 	local sandboxServer = fs.readFile('examples/SandboxServer.luau')
 	local sandboxClient = fs.readFile('examples/SandboxClient.luau')
 
-	assert(string.find(sandboxServer, 'HitboxPlusSandboxRemotes', 1, true) ~= nil)
-	assert(string.find(sandboxServer, 'DebugPayload', 1, true) ~= nil)
-	assert(string.find(sandboxServer, "debug = {", 1, true) ~= nil)
-	assert(string.find(sandboxServer, 'HitboxPlusDebug', 1, true) ~= nil)
+	assert(
+		string.find(sandboxServer, 'HitboxPlusSandboxRemotes', 1, true) ~= nil,
+		'sandbox server example should reference HitboxPlusSandboxRemotes'
+	)
+	assert(
+		string.find(sandboxServer, 'DebugPayload', 1, true) ~= nil,
+		'sandbox server example should reference DebugPayload'
+	)
+	assert(
+		string.find(sandboxServer, 'debug = {', 1, true) ~= nil,
+		'sandbox server example should configure debug options'
+	)
+	assert(
+		string.find(sandboxServer, 'HitboxPlusDebug', 1, true) ~= nil,
+		'sandbox server example should reference the shared debug folder'
+	)
 
-	assert(string.find(sandboxClient, 'HitboxPlusSandboxRemotes', 1, true) ~= nil)
-	assert(string.find(sandboxClient, 'DebugPayload', 1, true) ~= nil)
-	assert(string.find(sandboxClient, 'client:renderDebugPayload', 1, true) ~= nil)
-	assert(string.find(sandboxClient, "debug = {", 1, true) ~= nil)
-	assert(string.find(sandboxClient, 'HitboxPlusClientDebug', 1, true) ~= nil)
+	assert(
+		string.find(sandboxClient, 'HitboxPlusSandboxRemotes', 1, true) ~= nil,
+		'sandbox client example should reference HitboxPlusSandboxRemotes'
+	)
+	assert(
+		string.find(sandboxClient, 'DebugPayload', 1, true) ~= nil,
+		'sandbox client example should reference DebugPayload'
+	)
+	assert(
+		string.find(sandboxClient, 'client:renderDebugPayload', 1, true) ~= nil,
+		'sandbox client example should render incoming debug payloads'
+	)
+	assert(
+		string.find(sandboxClient, 'debug = {', 1, true) ~= nil,
+		'sandbox client example should configure debug options'
+	)
+	assert(
+		string.find(sandboxClient, 'HitboxPlusClientDebug', 1, true) ~= nil,
+		'sandbox client example should reference the local debug folder'
+	)
 end
