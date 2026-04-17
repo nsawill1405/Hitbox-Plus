@@ -15,11 +15,6 @@ return function(loadModule)
 	local client = HitboxPlus.Client.create({
 		debug = {
 			container = localRoot,
-			palette = {
-				query = Color3.fromRGB(0, 170, 255),
-				hit = Color3.fromRGB(0, 255, 0),
-				reject = Color3.fromRGB(255, 80, 80),
-			},
 		},
 		timeSource = function()
 			return 15.5
@@ -39,8 +34,24 @@ return function(loadModule)
 		rejections = {},
 	})
 
-	client:renderDebugPayload(payload)
-	expect(localRoot:FindFirstChild('HitboxPlusQuery') ~= nil, 'client renderer should create a local debug part')
+	local created = client:renderDebugPayload(payload)
+	local queryPart = localRoot:FindFirstChild('HitboxPlusQuery')
+
+	expect(type(created) == 'table', 'client renderer should return created instances')
+	expect(#created == 1, 'client renderer should return one created instance for a radius payload')
+	expect(created[1] == queryPart, 'client renderer should return the created query part')
+	expect(queryPart ~= nil, 'client renderer should create a local debug part')
+
+	local clientWithoutContainer = HitboxPlus.Client.create({
+		timeSource = function()
+			return 15.5
+		end,
+	})
+
+	local empty = clientWithoutContainer:renderDebugPayload(payload)
+
+	expect(type(empty) == 'table', 'client renderer without a container should still return a table')
+	expect(next(empty) == nil, 'client renderer without a container should return an empty table')
 
 	local request = client:buildRequest({
 		attackId = 'slash-1',
