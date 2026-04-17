@@ -10,4 +10,7 @@ end
 return {
 	Vector3 = if Roblox ~= nil then Roblox.Vector3 else Vector3,
 	CFrame = if Roblox ~= nil then Roblox.CFrame else CFrame,
+	Color3 = if Roblox ~= nil then Roblox.Color3 else Color3,
+	Instance = if Roblox ~= nil then Roblox.Instance else Instance,
+	Enum = if Roblox ~= nil then Roblox.Enum else Enum,
 }

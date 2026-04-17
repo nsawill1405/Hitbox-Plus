@@ -60,6 +60,7 @@ addSpecIfPresent('QuerySpec', 'test/QuerySpec.luau', './test/QuerySpec.luau')
 addSpecIfPresent('HistorySpec', 'test/HistorySpec.luau', './test/HistorySpec.luau')
 addSpecIfPresent('ResolverSpec', 'test/ResolverSpec.luau', './test/ResolverSpec.luau')
 addSpecIfPresent('PackageSpec', 'test/PackageSpec.luau', './test/PackageSpec.luau')
+addSpecIfPresent('DebugSpec', 'test/DebugSpec.luau', './test/DebugSpec.luau')
 
 table.sort(specs, function(left, right)
 	return left.name < right.name
