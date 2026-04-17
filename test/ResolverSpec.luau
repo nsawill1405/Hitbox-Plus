@@ -278,4 +278,145 @@ return function(loadModule)
 
 	expect(sharedResult.ok == true, 'resolver should still resolve normally')
 	expect(sharedRoot:FindFirstChild('HitboxPlusQuery') ~= nil, 'shared debug volume should be rendered')
+
+	local DebugEmitter = loadModule('src/Server/DebugEmitter.luau')
+	local debugRequest = {
+		attackId = 'debug-radius-2',
+		serverTime = 50,
+		query = {
+			type = 'radius',
+			position = Vector3.new(0, 0, 0),
+			radius = 8,
+		},
+	}
+	local debugResult = {
+		hits = {
+			{
+				entity = {
+					position = Vector3.new(4, 0, 0),
+				},
+			},
+		},
+		rejections = {},
+	}
+
+	local disabledRoot = Instance.new('Folder')
+	local disabledEmitter = DebugEmitter.create({
+		enabled = false,
+		mode = 'shared',
+		container = disabledRoot,
+		sharedSink = function()
+			error('disabled emitter should not invoke sinks')
+		end,
+	})
+	local disabledPayload = disabledEmitter:emit(debugRequest, debugResult)
+
+	expect(disabledPayload == nil, 'disabled emitter should not emit a payload')
+	expect(disabledRoot:FindFirstChild('HitboxPlusQuery') == nil, 'disabled emitter should not render shared debug')
+
+	local sharedPayload
+	local sharedSinkEmitter = DebugEmitter.create({
+		enabled = true,
+		mode = 'shared',
+		container = Instance.new('Folder'),
+		sharedSink = function(payload)
+			sharedPayload = payload
+		end,
+	})
+
+	sharedSinkEmitter:emit(debugRequest, debugResult)
+
+	expect(sharedPayload ~= nil, 'shared sink should receive a payload')
+	expect(sharedPayload.attackId == 'debug-radius-2', 'shared sink payload should include attackId')
+	expect(sharedPayload.queryType == 'radius', 'shared sink payload should include normalized query type')
+
+	local clientPayload
+	local clientSinkEmitter = DebugEmitter.create({
+		enabled = true,
+		mode = 'client',
+		clientSink = function(payload)
+			clientPayload = payload
+		end,
+	})
+
+	clientSinkEmitter:emit(debugRequest, debugResult)
+
+	expect(clientPayload ~= nil, 'client sink should receive a payload')
+	expect(clientPayload.attackId == 'debug-radius-2', 'client sink payload should include attackId')
+	expect(clientPayload.shape ~= nil and clientPayload.shape.kind == 'radius', 'client sink payload should include normalized shape')
+
+	local bothSharedPayload
+	local bothClientPayload
+	local bothEmitter = DebugEmitter.create({
+		enabled = true,
+		mode = 'both',
+		container = Instance.new('Folder'),
+		sharedSink = function(payload)
+			bothSharedPayload = payload
+		end,
+		clientSink = function(payload)
+			bothClientPayload = payload
+		end,
+	})
+
+	bothEmitter:emit(debugRequest, debugResult)
+
+	expect(bothSharedPayload ~= nil, 'both mode should drive the shared sink')
+	expect(bothClientPayload ~= nil, 'both mode should drive the client sink')
+
+	local guardedEmitter = DebugEmitter.create({
+		enabled = true,
+		mode = 'both',
+		container = Instance.new('Folder'),
+		sharedSink = {},
+		clientSink = {},
+	})
+
+	local guardedOk = pcall(function()
+		guardedEmitter:emit(debugRequest, debugResult)
+	end)
+
+	expect(guardedOk == true, 'non-function sinks should be ignored safely')
+
+	local normalizedPayload
+	local normalizedResolver = Resolver.create({
+		debugEmitter = DebugEmitter.create({
+			enabled = true,
+			mode = 'shared',
+			container = Instance.new('Folder'),
+			sharedSink = function(payload)
+				normalizedPayload = payload
+			end,
+		}),
+		validation = {
+			maxLatencySeconds = 0.2,
+			maxDistance = 20,
+		},
+	})
+
+	normalizedResolver:pushSnapshot({
+		timestamp = 51,
+		entities = {
+			{ id = 'enemy-debug', position = Vector3.new(4, 0, 0), radius = 2, team = 'Red' },
+		},
+	})
+
+	normalizedResolver:resolve({
+		attackId = 'debug-radius-3',
+		attackerId = 'player-a',
+		attackerPosition = Vector3.new(0, 0, 0),
+		attackerTeam = 'Blue',
+		serverTime = 51,
+		clientTime = 51,
+		query = {
+			type = 'radius',
+			position = Vector3.new(0, 0, 0),
+			radius = 8,
+		},
+	})
+
+	expect(normalizedPayload ~= nil, 'resolver should emit a debug payload')
+	expect(normalizedPayload.attackId == 'debug-radius-3', 'resolver payload should preserve attackId')
+	expect(normalizedPayload.queryType == 'radius', 'resolver payload should be normalized')
+	expect(normalizedPayload.shape ~= nil and normalizedPayload.shape.kind == 'radius', 'resolver payload should include normalized shape')
 end

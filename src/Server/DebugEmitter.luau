@@ -56,13 +56,13 @@ function DebugEmitter:emit(request, result)
 			DebugVisualizer.render(self.container, payload)
 		end
 
-		if self.sharedSink ~= nil then
+		if type(self.sharedSink) == 'function' then
 			self.sharedSink(payload)
 		end
 	end
 
 	if self.mode == 'client' or self.mode == 'both' then
-		if self.clientSink ~= nil then
+		if type(self.clientSink) == 'function' then
 			self.clientSink(payload)
 		end
 	end
