@@ -62,7 +62,7 @@ local function renderShape(container, payload, created)
 		local origin = shape.origin
 		local target = origin + directionUnit * length
 		queryPart.Size = Vector3.new(math.max(diameter, 0.05), math.max(diameter, 0.05), length)
-		queryPart.CFrame = CFrame.new(origin + directionUnit * (length / 2), target)
+		queryPart.CFrame = CFrame.lookAt(origin + directionUnit * (length / 2), target)
 	else
 		error(string.format('unsupported debug shape kind %s', tostring(shape.kind)))
 	end

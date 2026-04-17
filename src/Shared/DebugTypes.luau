@@ -10,7 +10,7 @@ local RobloxCompat = loadRobloxCompat()
 local Color3 = RobloxCompat.Color3
 local Vector3 = RobloxCompat.Vector3
 
-local DEFAULT_LIFETIME_SECONDS = 0.25
+local DEFAULT_LIFETIME_SECONDS = 0.2
 local DEFAULT_PALETTE = {
 	query = Color3.fromRGB(0, 170, 255),
 	hit = Color3.fromRGB(0, 255, 0),
