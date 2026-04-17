@@ -54,4 +54,8 @@ function Client:recordDebug(name, payload)
 	return self.debugger:record(name, payload)
 end
 
+function Client:renderDebugPayload(payload)
+	return self.debugger:render(payload)
+end
+
 return Client
