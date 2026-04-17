@@ -7,6 +7,8 @@ return function()
 		'stylua.toml',
 		'selene.toml',
 		'README.md',
+		'examples/SandboxServer.luau',
+		'examples/SandboxClient.luau',
 	}
 
 	for _, path in requiredFiles do

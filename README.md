@@ -77,6 +77,12 @@ end
 - Replace the default validator state machine by passing `validators` into `HitboxPlus.Server.create`.
 - Supply `predictor` or `debug.sink` in `HitboxPlus.Client.create` for client-side hooks.
 
+## Studio Sandbox
+
+- `examples/SandboxServer.luau` is the source of truth for the server sandbox flow.
+- `examples/SandboxClient.luau` is the source of truth for local debug rendering and retrigger input.
+- The Studio mirror should install those scripts into `ServerScriptService` and `StarterPlayerScripts`.
+
 ## Local Development
 
 ```bash
