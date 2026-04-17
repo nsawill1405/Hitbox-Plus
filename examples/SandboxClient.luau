@@ -3,6 +3,7 @@ local Workspace = game:GetService('Workspace')
 
 local HitboxPlus = require(ReplicatedStorage:WaitForChild('HitboxPlus'))
 local Remotes = ReplicatedStorage:WaitForChild('HitboxPlusSandboxRemotes')
+local DebugPayload = Remotes:WaitForChild('DebugPayload')
 
 local localRoot = Workspace:FindFirstChild('HitboxPlusClientDebug') or Instance.new('Folder')
 localRoot.Name = 'HitboxPlusClientDebug'
@@ -14,7 +15,7 @@ local client = HitboxPlus.Client.create({
 	},
 })
 
-Remotes.DebugPayload.OnClientEvent:Connect(function(payload)
+DebugPayload.OnClientEvent:Connect(function(payload)
 	client:renderDebugPayload(payload)
 end)
 

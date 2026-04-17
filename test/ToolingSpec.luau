@@ -14,4 +14,18 @@ return function()
 	for _, path in requiredFiles do
 		assert(fs.isFile(path), string.format('missing repo file %s', path))
 	end
+
+	local sandboxServer = fs.readFile('examples/SandboxServer.luau')
+	local sandboxClient = fs.readFile('examples/SandboxClient.luau')
+
+	assert(string.find(sandboxServer, 'HitboxPlusSandboxRemotes', 1, true) ~= nil)
+	assert(string.find(sandboxServer, 'DebugPayload', 1, true) ~= nil)
+	assert(string.find(sandboxServer, "debug = {", 1, true) ~= nil)
+	assert(string.find(sandboxServer, 'HitboxPlusDebug', 1, true) ~= nil)
+
+	assert(string.find(sandboxClient, 'HitboxPlusSandboxRemotes', 1, true) ~= nil)
+	assert(string.find(sandboxClient, 'DebugPayload', 1, true) ~= nil)
+	assert(string.find(sandboxClient, 'client:renderDebugPayload', 1, true) ~= nil)
+	assert(string.find(sandboxClient, "debug = {", 1, true) ~= nil)
+	assert(string.find(sandboxClient, 'HitboxPlusClientDebug', 1, true) ~= nil)
 end

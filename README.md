@@ -80,8 +80,8 @@ end
 ## Studio Sandbox
 
 - `examples/SandboxServer.luau` is the source of truth for the server sandbox flow.
-- `examples/SandboxClient.luau` is the source of truth for local debug rendering and retrigger input.
-- The Studio mirror should install those scripts into `ServerScriptService` and `StarterPlayerScripts`.
+- `examples/SandboxClient.luau` is the source of truth for local debug rendering.
+- The Studio mirror should install those scripts at `game.ServerScriptService.HitboxPlusSandbox` and `game.StarterPlayer.StarterPlayerScripts.HitboxPlusClientExample`.
 
 ## Local Development
 
