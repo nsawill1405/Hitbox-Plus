@@ -1,4 +1,12 @@
-local Rewind = require('./Rewind.luau')
+local function loadRewind()
+	if script ~= nil and script.Parent ~= nil then
+		return require(script.Parent.Rewind)
+	end
+
+	return require('./Rewind.luau')
+end
+
+local Rewind = loadRewind()
 
 local History = {}
 History.__index = History

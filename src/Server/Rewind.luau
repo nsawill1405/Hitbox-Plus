@@ -23,4 +23,3 @@ function Rewind.selectSnapshot(snapshots, timestamp)
 end
 
 return Rewind
-

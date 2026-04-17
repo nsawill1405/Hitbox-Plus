@@ -1,4 +1,8 @@
 return function(loadModule)
+	local function expect(condition, message)
+		assert(condition, message or 'query expectation failed')
+	end
+
 	local Roblox = require('@lune/roblox')
 	local CFrame = Roblox.CFrame
 	local Vector3 = Roblox.Vector3
@@ -13,8 +17,8 @@ return function(loadModule)
 		},
 	})
 
-	assert(normalizedConfig.history.retentionSeconds == 0.35)
-	assert(normalizedConfig.validation.maxLatencySeconds == 0.2)
+	expect(normalizedConfig.history.retentionSeconds == 0.35)
+	expect(normalizedConfig.validation.maxLatencySeconds == 0.2)
 
 	local normalizedBox = Queries.normalize({
 		type = 'box',
@@ -22,9 +26,9 @@ return function(loadModule)
 		size = Vector3.new(4, 6, 8),
 	})
 
-	assert(normalizedBox.type == 'box')
-	assert(normalizedBox.center.Position == Vector3.new(0, 4, 0))
-	assert(normalizedBox.maxTargets == math.huge)
+	expect(normalizedBox.type == 'box')
+	expect(normalizedBox.center.Position == Vector3.new(0, 4, 0))
+	expect(normalizedBox.maxTargets == math.huge)
 
 	local normalizedRadius = Queries.normalize({
 		type = 'radius',
@@ -32,8 +36,8 @@ return function(loadModule)
 		radius = 9,
 	})
 
-	assert(normalizedRadius.type == 'radius')
-	assert(normalizedRadius.radius == 9)
+	expect(normalizedRadius.type == 'radius')
+	expect(normalizedRadius.radius == 9)
 
 	local normalizedCast = Queries.normalize({
 		type = 'cast',
@@ -42,9 +46,9 @@ return function(loadModule)
 		radius = 2,
 	})
 
-	assert(normalizedCast.type == 'cast')
-	assert(normalizedCast.length == 12)
-	assert(normalizedCast.radius == 2)
+	expect(normalizedCast.type == 'cast')
+	expect(normalizedCast.length == 12)
+	expect(normalizedCast.radius == 2)
 
 	local resolution = Results.createResolution({
 		query = normalizedRadius,
@@ -62,7 +66,7 @@ return function(loadModule)
 		},
 	})
 
-	assert(resolution.ok == true)
-	assert(#resolution.hits == 1)
-	assert(resolution.rejections[1].reason == 'same-team')
+	expect(resolution.ok == true)
+	expect(#resolution.hits == 1)
+	expect(resolution.rejections[1].reason == 'same-team')
 end

@@ -19,4 +19,3 @@ return table.freeze({
 	QueryType = QueryType,
 	RejectReason = RejectReason,
 })
-

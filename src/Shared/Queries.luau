@@ -1,4 +1,12 @@
-local Types = require('./Types.luau')
+local function loadTypes()
+	if script ~= nil and script.Parent ~= nil then
+		return require(script.Parent.Types)
+	end
+
+	return require('./Types.luau')
+end
+
+local Types = loadTypes()
 
 local Queries = {}
 local Roblox = nil

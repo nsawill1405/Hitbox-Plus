@@ -57,4 +57,3 @@ function Config.normalize(config)
 end
 
 return Config
-

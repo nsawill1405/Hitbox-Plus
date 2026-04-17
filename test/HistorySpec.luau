@@ -1,4 +1,8 @@
 return function(loadModule)
+	local function expect(condition, message)
+		assert(condition, message or 'history expectation failed')
+	end
+
 	local Roblox = require('@lune/roblox')
 	local Vector3 = Roblox.Vector3
 
@@ -29,9 +33,9 @@ return function(loadModule)
 		},
 	})
 
-	assert(closestHistory:getClosest(1.25).timestamp == 1.2)
-	assert(closestHistory:getClosest(0.8).timestamp == 1.0)
-	assert(closestHistory:getClosest(2.0).timestamp == 1.7)
+	expect(closestHistory:getClosest(1.25).timestamp == 1.2)
+	expect(closestHistory:getClosest(0.8).timestamp == 1.0)
+	expect(closestHistory:getClosest(2.0).timestamp == 1.7)
 
 	local retainedHistory = History.create({
 		retentionSeconds = 0.5,
@@ -52,7 +56,7 @@ return function(loadModule)
 		entities = {},
 	})
 
-	assert(#retainedHistory:getSnapshots() == 2)
-	assert(retainedHistory:getSnapshots()[1].timestamp == 1.2)
-	assert(retainedHistory:getSnapshots()[2].timestamp == 1.7)
+	expect(#retainedHistory:getSnapshots() == 2)
+	expect(retainedHistory:getSnapshots()[1].timestamp == 1.2)
+	expect(retainedHistory:getSnapshots()[2].timestamp == 1.7)
 end
