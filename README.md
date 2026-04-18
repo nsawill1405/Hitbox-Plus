@@ -15,7 +15,7 @@ Hitbox Plus is a Wally-first Roblox community library for spatial query-based hi
 
 ```toml
 [dependencies]
-HitboxPlus = "williamnorth1405/hitbox-plus@0.1.0"
+HitboxPlus = "nsawill1405/hitbox-plus@0.1.0"
 ```
 
 ## Quick Start
