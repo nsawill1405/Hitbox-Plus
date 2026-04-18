@@ -15,6 +15,9 @@ return function(loadModule)
 	local client = HitboxPlus.Client.create({
 		debug = {
 			container = localRoot,
+			palette = {
+				query = Color3.fromRGB(255, 200, 0),
+			},
 		},
 		timeSource = function()
 			return 15.5
@@ -41,6 +44,10 @@ return function(loadModule)
 	expect(#created == 1, 'client renderer should return one created instance for a radius payload')
 	expect(created[1] == queryPart, 'client renderer should return the created query part')
 	expect(queryPart ~= nil, 'client renderer should create a local debug part')
+	expect(
+		queryPart.Color == Color3.fromRGB(255, 200, 0),
+		'client renderer should honor the configured debug palette'
+	)
 
 	local clientWithoutContainer = HitboxPlus.Client.create({
 		timeSource = function()

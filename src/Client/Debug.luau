@@ -20,12 +20,25 @@ local DebugVisualizer = loadShared('DebugVisualizer', 'src/Shared/DebugVisualize
 local Debug = {}
 Debug.__index = Debug
 
+local function mergePalette(configPalette, payloadPalette)
+	if configPalette == nil then
+		return payloadPalette
+	end
+
+	return {
+		query = configPalette.query or payloadPalette.query,
+		hit = configPalette.hit or payloadPalette.hit,
+		reject = configPalette.reject or payloadPalette.reject,
+	}
+end
+
 function Debug.create(config)
 	local debugConfig = config.debug or {}
 
 	return setmetatable({
 		container = debugConfig.container,
 		sink = debugConfig.sink,
+		palette = debugConfig.palette,
 		traces = {},
 	}, Debug)
 end
@@ -50,7 +63,18 @@ function Debug:render(payload)
 		return {}
 	end
 
-	return DebugVisualizer.render(self.container, payload)
+	local renderPayload = payload
+
+	if self.palette ~= nil then
+		renderPayload = {}
+		for key, value in payload do
+			renderPayload[key] = value
+		end
+
+		renderPayload.palette = mergePalette(self.palette, payload.palette)
+	end
+
+	return DebugVisualizer.render(self.container, renderPayload)
 end
 
 function Debug:getTraces()
