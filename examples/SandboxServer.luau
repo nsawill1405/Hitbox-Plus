@@ -140,10 +140,9 @@ local server = HitboxPlus.Server.create({
 })
 
 local sandboxState = buildSandbox()
+clearChildren(debugRoot)
 
 local function runAttack()
-	clearChildren(debugRoot)
-
 	local now = Workspace:GetServerTimeNow()
 	server:pushSnapshot({
 		timestamp = now,

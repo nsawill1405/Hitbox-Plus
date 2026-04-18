@@ -69,6 +69,38 @@ return function(loadModule)
 		'rejection marker should use rejection color'
 	)
 
+	local cleanupPayload = DebugTypes.createPayload({
+		attackId = 'cleanup-1',
+		mode = 'shared',
+		timestamp = 20,
+		lifetimeSeconds = 0.4,
+		query = {
+			type = 'radius',
+			position = Vector3.new(0, 0, 0),
+			radius = 3,
+		},
+	})
+
+	local cleanupContainer = makeContainer('CleanupRoot')
+	local scheduled = {}
+	cleanupPayload.cleanupScheduler = function(delaySeconds, callback)
+		table.insert(scheduled, {
+			delaySeconds = delaySeconds,
+			callback = callback,
+		})
+	end
+
+	local cleanupCreated = DebugVisualizer.render(cleanupContainer, cleanupPayload)
+	expect(#cleanupCreated == 1, 'cleanup probe should render one query part')
+	expect(#scheduled == #cleanupCreated, 'each created part should schedule its own cleanup')
+	expect(scheduled[1].delaySeconds == 0.4, 'cleanup should honor payload lifetimeSeconds')
+
+	for _, scheduledEntry in scheduled do
+		scheduledEntry.callback()
+	end
+
+	expect(#cleanupContainer:GetChildren() == 0, 'scheduled cleanup should destroy rendered parts')
+
 	local radiusPayload = DebugTypes.createPayload({
 		attackId = 'pulse-1',
 		mode = 'query',

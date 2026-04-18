@@ -41,6 +41,38 @@ local function appendMarker(created, container, name, position, color)
 	table.insert(created, marker)
 end
 
+local function getCleanupScheduler(payload)
+	if type(payload.cleanupScheduler) == 'function' then
+		return payload.cleanupScheduler
+	end
+
+	if task ~= nil and type(task.delay) == 'function' then
+		return task.delay
+	end
+
+	return nil
+end
+
+local function scheduleCleanup(created, payload)
+	local lifetimeSeconds = payload.lifetimeSeconds
+	if type(lifetimeSeconds) ~= 'number' or lifetimeSeconds <= 0 then
+		return
+	end
+
+	local schedule = getCleanupScheduler(payload)
+	if schedule == nil then
+		return
+	end
+
+	for _, instance in created do
+		schedule(lifetimeSeconds, function()
+			if instance.Parent ~= nil then
+				instance:Destroy()
+			end
+		end)
+	end
+end
+
 local function renderShape(container, payload, created)
 	local shape = payload.shape
 	local queryPart = makePart('HitboxPlusQuery', payload.palette.query)
@@ -91,6 +123,8 @@ function DebugVisualizer.render(container, payload)
 			payload.palette.reject
 		)
 	end
+
+	scheduleCleanup(created, payload)
 
 	return created
 end

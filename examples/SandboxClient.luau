@@ -17,14 +17,7 @@ local client = HitboxPlus.Client.create({
 	},
 })
 
-local function clearChildren(instance)
-	for _, child in instance:GetChildren() do
-		child:Destroy()
-	end
-end
-
 DebugPayload.OnClientEvent:Connect(function(payload)
-	clearChildren(localRoot)
 	client:renderDebugPayload(payload)
 end)
 
