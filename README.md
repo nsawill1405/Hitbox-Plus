@@ -1,4 +1,17 @@
-# Hitbox Plus
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f2027,50:203a43,100:2c5364&height=170&section=header&text=Hitbox%20Plus&fontSize=52&fontColor=ffffff&fontAlignY=36&desc=Lag-compensated%20spatial-query%20hitboxes%20for%20Roblox&descAlignY=58&descSize=16" alt="Hitbox Plus" width="100%" />
+
+<p>
+  <img src="https://img.shields.io/badge/Luau-00A2FF?style=for-the-badge&logo=roblox&logoColor=white" alt="Luau" />
+  <a href="https://github.com/nsawill1405/Hitbox-Plus/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/nsawill1405/Hitbox-Plus/ci.yml?branch=main&style=for-the-badge&label=CI&logo=githubactions&logoColor=white" alt="CI" /></a>
+  <a href="https://wally.run/package/nsawill1405/hitbox-plus"><img src="https://img.shields.io/badge/Wally-nsawill1405%2Fhitbox--plus-AD4646?style=for-the-badge" alt="Wally" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2c5364?style=for-the-badge" alt="License" /></a>
+</p>
+
+<p><a href="#features">Features</a> · <a href="#install">Install</a> · <a href="#quick-start">Quick Start</a> · <a href="#config-notes">Config Notes</a> · <a href="#extending">Extending</a> · <a href="#studio-sandbox">Studio Sandbox</a></p>
+
+</div>
 
 Hitbox Plus is a Wally-first Roblox community library for spatial query-based hit detection with snapshot-backed lag compensation hooks and built-in hit validation helpers.
 
@@ -92,3 +105,17 @@ lune run test/run.luau
 stylua src test examples
 selene src test examples
 ```
+
+## License
+
+[MIT](LICENSE) © William North. Issues and pull requests are welcome.
+
+---
+
+<div align="center">
+
+<sub>Made by <a href="https://github.com/nsawill1405">William North</a> · <a href="https://nsawill.co.uk">nsawill.co.uk</a></sub>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:2c5364,50:203a43,100:0f2027&height=100&section=footer" alt="" width="100%" />
+
+</div>

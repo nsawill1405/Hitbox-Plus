@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ok-nick/setup-aftman@v0.4.2
+      - name: Format check
+        run: stylua --check src test examples
+      - name: Lint
+        run: selene src test examples
+      - name: Unit tests
+        run: lune run test/run.luau
